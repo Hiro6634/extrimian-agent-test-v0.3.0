@@ -9,6 +9,8 @@ import {
     DID
 } from "@extrimian/agent";
 
+import {DIDDocument } from '@extrimian/did-core';
+
 import { 
     FileSystemStorage,
     FileSystemAgentSecureStorage
@@ -18,10 +20,10 @@ class AgentSingleton{
     private static singleton: AgentSingleton;
     private agent: Agent;
     private initialized: boolean = false;
-
+    private didMethod: string = "did:quarkid:matic";
     private constructor(){
         this.agent = new Agent({
-            didDocumentRegistry: new AgentModenaUniversalRegistry("http://modena.gcba-extrimian.com:8080", "did:quarkid:matic"),
+            didDocumentRegistry: new AgentModenaUniversalRegistry("http://modena.gcba-extrimian.com:8080", this.didMethod),
             didDocumentResolver: new AgentModenaUniversalResolver("http://modena.gcba-extrimian.com:8080"),
             agentStorage: new FileSystemStorage({
                 filepath: "./src/data/agent-issuer-storage.json"
@@ -73,7 +75,7 @@ class AgentSingleton{
                                     "VerifiableCredential",
                                     "AlumniCredential"
                                 ],
-                                issuer:  "did:quarkid:starknet:EiBZrwBrx5-Vl9xYeENGmJ67pc4uQgvwA8S_rbXifGDw0w",
+                                issuer:  "did:quarkid:matic:EiDgdE9uFjI186lFpOLBwWibRqXeJOyxaJcYVtP3b2XeTQ",
                                 issuanceDate: new Date(),
                                 credentialSubject: {
                                     id: holderId,
@@ -224,17 +226,47 @@ const index = async () => {
 
     const issuerAgent = await AgentSingleton.getInstance().getAgent();
 
-    const invitationMsg = await issuerAgent.vc.createInvitationMessage({
-        flow: CredentialFlow.Issuance
-    });
- 
-    console.log('invitationMessage:', invitationMsg);
+    // try{
+    //     const invitationMsg = await issuerAgent.vc.createInvitationMessage({
+    //         flow: CredentialFlow.Issuance
+    //     });
+     
+    //     console.log('invitationMessage:', invitationMsg);
+    // }
+    // catch( error ){
+    //     console.log(error);
+    // }
 
     // const myDid: DID = await issuerAgent.identity.createNewDID({
     //     dwnUrl: dwnUrl
     // });
-
     // console.log("DID:  " + myDid.value);
+
+    // try{
+    //     const dids = await issuerAgent.identity.getDIDs();
+    //     dids.map((async did=>{
+    //         console.log("DID:" + did);
+    //         console.log("DidMethod:"+DID.from(did).getDidMethod());
+    //         console.log("Did:" + DID.from(did).value);
+    //         const didDoc: DIDDocument  = await issuerAgent.resolver.resolve(DID.from(did));
+    //         console.log("DidDocument:" + didDoc);
+    //     }));
+    // }
+    // catch(error){
+    //     console.error(error);
+    // }
+
+    try{
+        const did = "did:quarkid:matic:EiDs1liYifwFEg9l7rxrpR48MH-7Z-M2E32R1vEYThQWsQ";
+        console.log("DID:" + did);
+        console.log("DidMethod:"+DID.from(did).getDidMethod());
+        console.log("Did:" + DID.from(did).value);
+        const didDoc: DIDDocument  = await issuerAgent.resolver.resolve(DID.from(did));
+        console.log("DidDocument:" + didDoc);
+    }
+    catch(error){
+        console.error(error);
+    }
 
 }
 
