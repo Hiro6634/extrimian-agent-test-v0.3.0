@@ -37,6 +37,7 @@ class AgentSingleton{
                 dwnPollMilliseconds: 5000
             })]
         });
+        console.log("Agent Created");
 
     }
 
@@ -212,6 +213,7 @@ class AgentSingleton{
     private  initialize = async () => {
         if( this.initialized ) return;
         await this.agent.initialize();
+        console.log("Agent Initializated");
         this.initialized = true;
     }
 }
