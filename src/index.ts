@@ -226,16 +226,17 @@ const index = async () => {
 
     const issuerAgent = await AgentSingleton.getInstance().getAgent();
 
-    // try{
-    //     const invitationMsg = await issuerAgent.vc.createInvitationMessage({
-    //         flow: CredentialFlow.Issuance
-    //     });
+    // Emision de VC
+    try{
+        const invitationMsg = await issuerAgent.vc.createInvitationMessage({
+            flow: CredentialFlow.Issuance
+        });
      
-    //     console.log('invitationMessage:', invitationMsg);
-    // }
-    // catch( error ){
-    //     console.log(error);
-    // }
+        console.log('invitationMessage:', invitationMsg);
+    }
+    catch( error ){
+        console.log(error);
+    }
 
     // const myDid: DID = await issuerAgent.identity.createNewDID({
     //     dwnUrl: dwnUrl
@@ -256,17 +257,18 @@ const index = async () => {
     //     console.error(error);
     // }
 
-    try{
-        const did = "did:quarkid:matic:EiDs1liYifwFEg9l7rxrpR48MH-7Z-M2E32R1vEYThQWsQ";
-        console.log("DID:" + did);
-        console.log("DidMethod:"+DID.from(did).getDidMethod());
-        console.log("Did:" + DID.from(did).value);
-        const didDoc: DIDDocument  = await issuerAgent.resolver.resolve(DID.from(did));
-        console.log("DidDocument:" + didDoc);
-    }
-    catch(error){
-        console.error(error);
-    }
+    //DID Resolver
+    // try{
+    //     const did = "did:quarkid:matic:EiDs1liYifwFEg9l7rxrpR48MH-7Z-M2E32R1vEYThQWsQ";
+    //     console.log("DID:" + did);
+    //     console.log("DidMethod:"+DID.from(did).getDidMethod());
+    //     console.log("Did:" + DID.from(did).value);
+    //     const didDoc: DIDDocument  = await issuerAgent.resolver.resolve(DID.from(did));
+    //     console.log("DidDocument:" + didDoc);
+    // }
+    // catch(error){
+    //     console.error(error);
+    // }
 
 }
 
